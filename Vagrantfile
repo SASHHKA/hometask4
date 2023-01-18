@@ -65,7 +65,13 @@ end
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-   sudo useradd -m -p '$6$rtfgtr$5NiKjbZXxPGEzaq5LzgnVzYHH7tYKu.ApCUmD4IdFFdo9rADWJEpq.HOfUg3vW1u0isX4rrCszEN/UYuSmlQn/'  adminuser
+   sudo useradd -m -p '$6$rtfgtr$5NiKjbZXxPGEzaq5LzgnVzYHH7tYKu.ApCUmD4IdFFdo9rADWJEpq.HOfUg3vW1u0isX4rrCszEN/UYuSmlQn/' adminuser
+   sudo usermod -a -G admin adminuser
+   sudo useradd -m poweruser
+   sudo passwd -d poweruser
+   echo 'poweruser ALL=(All)NOPASSWD: /usr/sbin/iptables' | sudo EDITOR='tee -a' visudo
+   sudo usermod -a -G adminuser poweruser
+   sudo ln -s  /etc/mtab /home/poweruser
   #   apt-get update
   #   apt-get install -y apache2
   SHELL
